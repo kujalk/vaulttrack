@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VaultTrack — Secure Investment Tracker</title>
+  <meta name="description" content="A privacy-first desktop investment tracker for macOS and Windows. AES-256 encrypted, offline, and beautifully designed." />
+  <meta property="og:title" content="VaultTrack — Secure Investment Tracker" />
+  <meta property="og:description" content="Track your portfolio with bank-grade encryption. Your data never leaves your device." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0D1B2E;
+      --bg2:       #111E3A;
+      --bg3:       #172540;
+      --border:    rgba(255,255,255,0.08);
+      --text:      #F1F5F9;
+      --muted:     #94A3B8;
+      --accent:    #5E7AFF;
+      --teal:      #22D3A0;
+      --purple:    #A855F7;
+      --warning:   #F59E0B;
+      --danger:    #EF4444;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 96px 0; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13, 27, 46, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 18px; color: var(--text);
+    }
+    .logo-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #5E7AFF 0%, #22D3A0 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .nav-cta {
+      display: flex; gap: 12px; align-items: center;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      border: none; cursor: pointer; transition: all 0.15s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #5E7AFF, #4B63E0);
+      color: #fff;
+      box-shadow: 0 0 24px rgba(94,122,255,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 32px rgba(94,122,255,0.5); text-decoration: none; }
+    .btn-ghost {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.10); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(94,122,255,0.18) 0%, transparent 70%);
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(94,122,255,0.12); border: 1px solid rgba(94,122,255,0.3);
+      color: var(--accent); border-radius: 99px;
+      padding: 5px 14px; font-size: 13px; font-weight: 500;
+      margin-bottom: 32px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+    h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 800; line-height: 1.1; letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #5E7AFF 0%, #22D3A0 50%, #A855F7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 20px; color: var(--muted); max-width: 540px; margin: 0 auto 48px;
+    }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-note {
+      margin-top: 18px; font-size: 13px; color: var(--muted);
+    }
+
+    /* ── Platform pills ── */
+    .platforms {
+      display: flex; gap: 8px; justify-content: center; margin-top: 56px;
+      flex-wrap: wrap;
+    }
+    .platform-pill {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px 14px; font-size: 13px; color: var(--muted);
+    }
+
+    /* ── Screenshot area ── */
+    .screenshot-wrap {
+      margin: 64px auto 0; max-width: 900px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 80px rgba(94,122,255,0.12);
+    }
+    .screenshot-bar {
+      background: var(--bg2); padding: 12px 20px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #EF4444; }
+    .dot-y { background: #F59E0B; }
+    .dot-g { background: #22D3A0; }
+    .screenshot-body {
+      padding: 40px; min-height: 280px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 14px;
+    }
+    .mock-dashboard {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%;
+    }
+    .mock-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+    }
+    .mock-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .mock-value { font-size: 22px; font-weight: 700; margin-top: 6px; }
+    .mock-bars {
+      grid-column: span 2;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+      display: flex; flex-direction: column; justify-content: flex-end; gap: 8px;
+    }
+    .mock-chart { display: flex; align-items: flex-end; gap: 6px; height: 70px; }
+    .mock-bar { flex: 1; border-radius: 4px 4px 0 0; opacity: 0.85; }
+
+    /* ── Features ── */
+    .section-label {
+      font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--accent); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+      letter-spacing: -1px; margin-bottom: 16px;
+    }
+    .section-sub { font-size: 17px; color: var(--muted); max-width: 520px; margin-bottom: 56px; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+    }
+    .feature-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      border-color: rgba(94,122,255,0.4);
+      box-shadow: 0 8px 32px rgba(94,122,255,0.08);
+    }
+    .feat-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 16px;
+    }
+    .feat-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feat-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* ── Security section ── */
+    .security-section {
+      background: linear-gradient(135deg, rgba(94,122,255,0.08) 0%, rgba(34,211,160,0.06) 100%);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .security-list { list-style: none; space-y: 16px; }
+    .security-list li {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 15px;
+    }
+    .security-list li:last-child { border-bottom: none; }
+    .sec-icon { font-size: 20px; line-height: 1.4; }
+    .security-code {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px; font-family: 'Courier New', monospace;
+      font-size: 13px; line-height: 1.8; color: #a8b9cc;
+    }
+    .code-comment { color: #475569; }
+    .code-key { color: var(--teal); }
+    .code-arrow { color: var(--muted); }
+    .code-value { color: var(--accent); }
+    .code-enc { color: var(--purple); }
+
+    /* ── Pricing / CTA ── */
+    .cta-section { text-align: center; }
+    .pricing-card {
+      max-width: 440px; margin: 0 auto;
+      background: var(--bg2); border: 1px solid rgba(94,122,255,0.3);
+      border-radius: 24px; padding: 44px;
+      box-shadow: 0 0 60px rgba(94,122,255,0.12);
+    }
+    .price-label { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+    .price { font-size: 56px; font-weight: 800; letter-spacing: -2px; }
+    .price sup { font-size: 24px; font-weight: 600; vertical-align: super; }
+    .price-note { font-size: 14px; color: var(--muted); margin-top: 4px; margin-bottom: 32px; }
+    .price-features { list-style: none; margin-bottom: 32px; text-align: left; }
+    .price-features li {
+      display: flex; gap: 10px; align-items: center;
+      padding: 10px 0; font-size: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+    .price-features li:last-child { border-bottom: none; }
+    .checkmark { color: var(--teal); font-size: 16px; }
+
+    /* ── FAQ ── */
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+    }
+    .faq-q { font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 48px 0;
+      text-align: center; color: var(--muted); font-size: 14px;
+    }
+    .footer-logo { font-size: 20px; font-weight: 800; margin-bottom: 12px; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .security-grid { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .mock-dashboard { grid-template-columns: 1fr 1fr; }
+      .mock-bars { grid-column: span 2; }
+    }
+    @media (max-width: 480px) {
+      .mock-dashboard { grid-template-columns: 1fr; }
+      .mock-bars { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Nav ─────────────────────────────────────────────────────────────── -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-icon">📈</div>
+        VaultTrack
+      </div>
+      <div class="nav-cta">
+        <a href="#features" class="btn btn-ghost" style="display:none">Features</a>
+        <a href="#download" class="btn btn-primary">
+          ⬇ Download
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Hero ─────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Now available for macOS & Windows
+    </div>
+
+    <h1>
+      Your investments.<br />
+      <span class="gradient-text">Your device. Your data.</span>
+    </h1>
+
+    <p class="hero-sub">
+      A privacy-first portfolio tracker with bank-grade AES-256 encryption.
+      No subscriptions. No cloud. No compromise.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#download" class="btn btn-primary" style="font-size:16px; padding:14px 32px">
+        ⬇&nbsp; Download Free
+      </a>
+      <a href="#features" class="btn btn-ghost" style="font-size:16px; padding:14px 28px">
+        See Features →
+      </a>
+    </div>
+    <p class="hero-note">Free to use · No account required · Works 100% offline</p>
+
+    <div class="platforms">
+      <div class="platform-pill">🍎 macOS 12+</div>
+      <div class="platform-pill">🪟 Windows 10/11</div>
+      <div class="platform-pill">🔒 AES-256-GCM Encrypted</div>
+      <div class="platform-pill">📴 Fully Offline</div>
+    </div>
+
+    <!-- Mock Dashboard Preview -->
+    <div class="screenshot-wrap">
+      <div class="screenshot-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span style="margin-left:12px; font-size:12px; color:var(--muted)">VaultTrack — Dashboard</span>
+      </div>
+      <div class="screenshot-body">
+        <div class="mock-dashboard">
+          <div class="mock-card">
+            <div class="mock-label">Portfolio Value</div>
+            <div class="mock-value" style="color:var(--accent)">LKR 4.8M</div>
+            <div style="font-size:12px; color:var(--teal); margin-top:4px">↑ Latest snapshot</div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-label">Investments</div>
+            <div class="mock-value">8</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px">In latest record</div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-label">Records</div>
+            <div class="mock-value" style="color:var(--warning)">24</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px">Unique dates</div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-label">Asset Types</div>
+            <div class="mock-value" style="color:var(--purple)">6</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px">Unique holdings</div>
+          </div>
+          <div class="mock-bars">
+            <div style="font-size:12px; color:var(--muted)">Monthly Portfolio Value</div>
+            <div class="mock-chart">
+              <div class="mock-bar" style="height:35%; background:var(--accent)"></div>
+              <div class="mock-bar" style="height:42%; background:var(--accent)"></div>
+              <div class="mock-bar" style="height:38%; background:var(--accent)"></div>
+              <div class="mock-bar" style="height:55%; background:var(--accent)"></div>
+              <div class="mock-bar" style="height:60%; background:var(--accent)"></div>
+              <div class="mock-bar" style="height:72%; background:var(--accent)"></div>
+              <div class="mock-bar" style="height:68%; background:var(--teal)"></div>
+              <div class="mock-bar" style="height:80%; background:var(--teal)"></div>
+              <div class="mock-bar" style="height:85%; background:var(--teal)"></div>
+              <div class="mock-bar" style="height:90%; background:var(--purple)"></div>
+              <div class="mock-bar" style="height:95%; background:var(--purple)"></div>
+              <div class="mock-bar" style="height:100%; background:linear-gradient(to top, var(--accent), var(--teal))"></div>
+            </div>
+          </div>
+          <div class="mock-bars">
+            <div style="font-size:12px; color:var(--muted)">Asset Allocation</div>
+            <div style="margin-top:12px; display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                <div style="width:10px; height:10px; border-radius:50%; background:var(--accent)"></div>
+                <span>Stocks</span>
+                <span style="margin-left:auto; color:var(--muted)">42%</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                <div style="width:10px; height:10px; border-radius:50%; background:var(--teal)"></div>
+                <span>Gold</span>
+                <span style="margin-left:auto; color:var(--muted)">28%</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                <div style="width:10px; height:10px; border-radius:50%; background:var(--purple)"></div>
+                <span>Crypto</span>
+                <span style="margin-left:auto; color:var(--muted)">18%</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; font-size:13px;">
+                <div style="width:10px; height:10px; border-radius:50%; background:var(--warning)"></div>
+                <span>Other</span>
+                <span style="margin-left:auto; color:var(--muted)">12%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Features ─────────────────────────────────────────────────────────── -->
+<section id="features">
+  <div class="container">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything you need.<br />Nothing you don't.</h2>
+    <p class="section-sub">Built for investors who care about privacy, not another subscription.</p>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(94,122,255,0.12)">🔐</div>
+        <div class="feat-title">AES-256-GCM Encryption</div>
+        <div class="feat-desc">Every record is individually encrypted with a key derived from your master password via Argon2id. Your password is <strong>never stored anywhere</strong>.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(34,211,160,0.12)">📊</div>
+        <div class="feat-title">Rich Analytics Dashboard</div>
+        <div class="feat-desc">Portfolio value over time, asset allocation donut, monthly trend bars, and currency breakdown — all from your latest snapshot data.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(168,85,247,0.12)">📋</div>
+        <div class="feat-title">Reusable Templates</div>
+        <div class="feat-desc">Save a set of investments as a template and apply it to any date with one click. Create templates from any existing date's entries instantly.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(245,158,11,0.12)">💱</div>
+        <div class="feat-title">Auto Currency Conversion</div>
+        <div class="feat-desc">Converted amounts update instantly on currency change. Uses open.er-api.com (free, no key needed) or your own premium API key. Manual rate override supported.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(239,68,68,0.12)">📤</div>
+        <div class="feat-title">Excel Backup &amp; Restore</div>
+        <div class="feat-desc">Export all records, templates, and rates to a human-readable Excel workbook. Import back at any time — existing records are never duplicated.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(34,211,160,0.10)">🌗</div>
+        <div class="feat-title">Light &amp; Dark Theme</div>
+        <div class="feat-desc">A carefully designed dark navy theme by default, with a clean light mode available at any time. Your preference is saved across sessions.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(94,122,255,0.10)">📴</div>
+        <div class="feat-title">Fully Offline</div>
+        <div class="feat-desc">No account, no sync, no server. The app works without internet. Optional currency rate fetching is the only outbound request — and it's off by default.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(168,85,247,0.10)">🗓️</div>
+        <div class="feat-title">Date-Based Records</div>
+        <div class="feat-desc">Log your portfolio on any date. Perfect for monthly or weekly snapshots. Jump to any historical record instantly from the history panel.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Security deep-dive ────────────────────────────────────────────────── -->
+<section class="security-section">
+  <div class="container">
+    <div class="security-grid">
+      <div>
+        <div class="section-label">Security</div>
+        <h2 class="section-title">Military-grade encryption. Zero trust.</h2>
+        <p style="font-size:16px; color:var(--muted); margin-bottom:32px; line-height:1.7;">
+          Your master password is never stored — not even hashed. The encryption key chain is mathematically
+          derived at runtime and discarded when you log out.
+        </p>
+        <ul class="security-list">
+          <li>
+            <span class="sec-icon">🔑</span>
+            <div>
+              <strong>Argon2id key derivation</strong><br />
+              <span style="color:var(--muted); font-size:14px">Memory-hard KDF (64 MB, 3 passes) — the same algorithm used by modern password managers. GPU brute-force is computationally infeasible.</span>
+            </div>
+          </li>
+          <li>
+            <span class="sec-icon">🔒</span>
+            <div>
+              <strong>AES-256-GCM authenticated encryption</strong><br />
+              <span style="color:var(--muted); font-size:14px">Every database record is individually encrypted. Tampering is detected. Random nonce on every write.</span>
+            </div>
+          </li>
+          <li>
+            <span class="sec-icon">🧱</span>
+            <div>
+              <strong>MEK / KEK split key pattern</strong><br />
+              <span style="color:var(--muted); font-size:14px">Changing your password re-wraps the key — no bulk re-encryption needed. Zero downtime, zero data loss.</span>
+            </div>
+          </li>
+          <li>
+            <span class="sec-icon">🖥️</span>
+            <div>
+              <strong>Local only</strong><br />
+              <span style="color:var(--muted); font-size:14px">Data lives in <code>%APPDATA%\VaultTrack</code> on Windows and <code>~/Library/Application Support/VaultTrack</code> on macOS. It never leaves your machine.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="security-code">
+<span class="code-comment">// Key chain (runtime only — nothing stored in plain text)</span>
+
+<span class="code-key">password</span>  <span class="code-arrow">──Argon2id──►</span>  <span class="code-value">KEK</span>  <span class="code-comment">(in RAM)</span>
+                      <span class="code-arrow">│</span>
+               <span class="code-enc">AES-256-GCM</span>
+                      <span class="code-arrow">▼</span>
+               <span class="code-value">MEK</span>  <span class="code-comment">(Master Key, in RAM)</span>
+                      <span class="code-arrow">│</span>
+               <span class="code-enc">AES-256-GCM  ×  N</span>
+                      <span class="code-arrow">▼</span>
+  <span class="code-key">investments.db</span>  <span class="code-comment">← only ciphertext on disk</span>
+
+
+<span class="code-comment">// What's stored in auth.dat:</span>
+<span class="code-key">{</span>
+  <span class="code-value">"salt"</span>:          <span class="code-enc">base64(32 random bytes)</span>,
+  <span class="code-value">"encrypted_mek"</span>: <span class="code-enc">AES-GCM(KEK, MEK)</span>
+<span class="code-key">}</span>
+
+<span class="code-comment">// Your password → nowhere.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Download / CTA ────────────────────────────────────────────────────── -->
+<section class="cta-section" id="download">
+  <div class="container">
+    <div class="section-label" style="text-align:center">Get Started</div>
+    <h2 class="section-title" style="text-align:center">Start tracking today.</h2>
+    <p class="section-sub" style="text-align:center; margin-left:auto; margin-right:auto">
+      One-time purchase. No subscription. Free updates forever.
+    </p>
+
+    <div class="pricing-card">
+      <div class="price-label">One-time</div>
+      <div class="price">
+        <sup>$</sup><!-- Update price -->9
+      </div>
+      <div class="price-note">Pay once · Yours forever · All future updates included</div>
+
+      <ul class="price-features">
+        <li><span class="checkmark">✓</span> macOS + Windows single license</li>
+        <li><span class="checkmark">✓</span> AES-256 encrypted local database</li>
+        <li><span class="checkmark">✓</span> Unlimited investment records</li>
+        <li><span class="checkmark">✓</span> Auto currency conversion</li>
+        <li><span class="checkmark">✓</span> Excel export &amp; import (backup)</li>
+        <li><span class="checkmark">✓</span> Dashboard analytics &amp; charts</li>
+        <li><span class="checkmark">✓</span> Templates &amp; manual rates</li>
+        <li><span class="checkmark">✓</span> All future updates, free</li>
+      </ul>
+
+      <!-- Replace href with your actual purchase link (Gumroad, Lemon Squeezy, etc.) -->
+      <a href="#" class="btn btn-primary" style="width:100%; justify-content:center; font-size:16px; padding:16px">
+        ⬇&nbsp; Download for macOS &amp; Windows
+      </a>
+      <p style="margin-top:14px; font-size:13px; color:var(--muted); text-align:center">
+        Instant download after purchase · No account required to use
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ──────────────────────────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="section-label" style="text-align:center">FAQ</div>
+    <h2 class="section-title" style="text-align:center; margin-bottom:48px">Common questions</h2>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">What happens if I forget my password?</div>
+        <div class="faq-a">Your data cannot be recovered. The master password is never stored anywhere — not even hashed. This is by design: it means no one (including us) can access your data without the password. Use a password manager to store it safely.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I use this on multiple devices?</div>
+        <div class="faq-a">Yes. Copy your <code>auth.dat</code> and <code>investments.db</code> files (or use the Excel export) to the new device. The app works fully offline on each machine with the same password.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is the database file safe to back up to cloud storage?</div>
+        <div class="faq-a">Yes. The database contains only AES-256-GCM ciphertext — no plaintext data. It is safe to back up to Dropbox, OneDrive, or any cloud storage without exposing your financial data.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How does currency conversion work?</div>
+        <div class="faq-a">The app uses <a href="https://open.er-api.com">open.er-api.com</a> (free, no key required) by default. You can also enter a paid API key for higher rate limits, or enter manual exchange rates that override API rates.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can someone extract my data from the .exe file?</div>
+        <div class="faq-a">No. The binary contains no user data. Even with full decompilation, an attacker still needs your <code>investments.db</code> <em>and</em> your password. Without the password, breaking Argon2id + AES-256-GCM is computationally infeasible.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the Excel backup for?</div>
+        <div class="faq-a">The Excel export creates a human-readable backup of all your records, templates, and exchange rates. You can open it in Excel or LibreOffice, review it, and re-import it. Existing records are never duplicated on import.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">📈 VaultTrack</div>
+    <p>Privacy-first investment tracking · Your data stays on your device</p>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <!-- Add your links below -->
+      <!-- <a href="privacy.html">Privacy Policy</a> -->
+      <!-- <a href="mailto:support@yourdomain.com">Support</a> -->
+    </div>
+    <p style="margin-top:24px; font-size:13px; color:#475569">
+      © 2025 VaultTrack. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
