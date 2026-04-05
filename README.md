@@ -11,12 +11,11 @@
 
 **Your investments. Your device. Your data.**
 
-[🛒 Buy](#-get-vaulttrack) · [Features](#-features) · [Security](#-security) · [FAQ](#-faq)
+[🌐 Website](https://kujalk.github.io/vaulttrack/) · [🛒 Buy](#-get-vaulttrack) · [Features](#-features) · [Security](#-security) · [FAQ](#-faq)
 
 ---
 
-<!-- Replace with a real screenshot once you have one -->
-> 📸 *Screenshots coming soon!*
+**[→ Visit the product page for full details & screenshots](https://kujalk.github.io/vaulttrack/)**
 
 </div>
 
