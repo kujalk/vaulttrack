@@ -2,21 +2,21 @@
 
 # 📈 VaultTrack
 
-### Secure, offline investment portfolio tracker for macOS and Windows
+### Secure, offline investment portfolio tracker for Windows
 
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-blue?style=for-the-badge)](https://github.com/your-username/vaulttrack/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue?style=for-the-badge)](https://janaflux.gumroad.com/l/vaulttrack)
 [![Security](https://img.shields.io/badge/encryption-AES--256--GCM-green?style=for-the-badge)](#-security)
 [![License](https://img.shields.io/badge/license-Proprietary-orange?style=for-the-badge)](#)
-[![Price](https://img.shields.io/badge/price-$9%20one--time-blueviolet?style=for-the-badge)](#-download)
+[![Price](https://img.shields.io/badge/price-$9%20one--time-blueviolet?style=for-the-badge)](https://janaflux.gumroad.com/l/vaulttrack)
 
 **Your investments. Your device. Your data.**
 
-[⬇ Download](#-download) · [Features](#-features) · [Security](#-security) · [FAQ](#-faq)
+[🛒 Buy](#-get-vaulttrack) · [Features](#-features) · [Security](#-security) · [FAQ](#-faq)
 
 ---
 
 <!-- Replace with a real screenshot once you have one -->
-> 📸 *Screenshots coming soon — build the app and take your own!*
+> 📸 *Screenshots coming soon!*
 
 </div>
 
@@ -67,23 +67,17 @@ Password  ──Argon2id──►  KEK (Key Encryption Key)   [RAM only]
 
 ---
 
-## ⬇ Download
+## 🛒 Get VaultTrack
 
-| Platform | Link |
-|---|---|
-| 🍎 **macOS** (Universal) | [Download .dmg](#) |
-| 🪟 **Windows** (64-bit) | [Download .exe](#) |
+**[👉 Buy on Gumroad — $9](https://janaflux.gumroad.com/l/vaulttrack)**
 
-> **One-time purchase · $9 · No subscription · All updates included**
->
-> Purchase at: **[your-store-link-here]**
+> One-time purchase · No subscription · All future updates included · Instant download
 
 ### System Requirements
 
 | | Minimum |
 |---|---|
-| **macOS** | macOS 12 Monterey or later |
-| **Windows** | Windows 10 (64-bit) or Windows 11 |
+| **OS** | Windows 10 (64-bit) or Windows 11 |
 | **RAM** | 256 MB |
 | **Disk** | 50 MB (plus your data) |
 
@@ -91,8 +85,8 @@ Password  ──Argon2id──►  KEK (Key Encryption Key)   [RAM only]
 
 ## 🚀 Getting Started
 
-1. **Download** the binary for your platform above
-2. **Run** the installer / .exe — no additional software needed
+1. **Purchase** on Gumroad — you'll get a download link instantly
+2. **Run** the `.exe` installer — no additional software needed
 3. On first launch, **set a master password** (this encrypts your vault — remember it!)
 4. Go to **Profile → Currency Preferences** to pick your base currency and preferred currencies
 5. Head to **Investments** and start adding your first entries
@@ -125,7 +119,7 @@ The dashboard always shows your **current portfolio snapshot** — not a cumulat
 
 **Export** (Profile → Data Management → Export to Excel):
 - Creates a `.xlsx` workbook with 3 sheets: `Investment Records`, `Templates`, `Manual Rates`
-- Human-readable — open in Excel, Numbers, or LibreOffice to review your data
+- Human-readable — open in Excel or LibreOffice to review your data
 - Keep it secure: unlike the `.db` file, the Excel export is **unencrypted plaintext**
 
 **Import** (Profile → Data Management → Import from Excel):
@@ -148,18 +142,14 @@ Your data cannot be recovered. The master password is never stored anywhere — 
 <details>
 <summary><strong>Can I use this on multiple computers?</strong></summary>
 
-Yes. Copy `auth.dat` and `investments.db` from your app-data folder to the new machine, or use the Excel export/import feature. Your password works on any copy of the files.
-
-**Data location:**
-- Windows: `%APPDATA%\VaultTrack\`
-- macOS: `~/Library/Application Support/VaultTrack/`
+Yes. Copy `auth.dat` and `investments.db` from `%APPDATA%\VaultTrack\` to the same folder on the new machine, or use the Excel export/import feature. Your password works on any copy of the files.
 
 </details>
 
 <details>
 <summary><strong>Is my database file safe to back up to cloud storage?</strong></summary>
 
-Yes. `investments.db` contains only AES-256-GCM ciphertext — no plaintext data. It is safe to back up to Dropbox, OneDrive, iCloud, or any cloud storage.
+Yes. `investments.db` contains only AES-256-GCM ciphertext — no plaintext data. It is safe to back up to Dropbox, OneDrive, or any cloud storage.
 
 </details>
 
@@ -180,7 +170,14 @@ No. The only optional outbound request is fetching exchange rates (which you can
 <details>
 <summary><strong>Is this open source?</strong></summary>
 
-The source code is proprietary. The compiled binaries are provided for purchase. The security model is fully documented above so you can audit the design.
+The source code is proprietary. The compiled binary is available for purchase. The security model is fully documented above so you can audit the design.
+
+</details>
+
+<details>
+<summary><strong>How do I get support?</strong></summary>
+
+Open an issue on this repository or reach out via the [Gumroad product page](https://janaflux.gumroad.com/l/vaulttrack).
 
 </details>
 
@@ -188,7 +185,7 @@ The source code is proprietary. The compiled binaries are provided for purchase.
 
 ## 📬 Support
 
-Found a bug or have a question? Open an issue on this repository or email: **[your-email@domain.com]**
+Questions or issues? Contact via the [Gumroad product page](https://janaflux.gumroad.com/l/vaulttrack) or open an issue on this repository.
 
 ---
 
